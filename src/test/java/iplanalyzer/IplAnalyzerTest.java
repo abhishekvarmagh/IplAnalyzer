@@ -18,9 +18,17 @@ public class IplAnalyzerTest {
     @Test
     public void givenCSVFilePath_ShouldReturnBestBattingAverage() {
         iplAnalyzer.loadIplData(IPL_MOST_RUN_CSV_FILE_PATH);
-        String sortedData = iplAnalyzer.sortDataAccordingToTheColumn();
+        String sortedData = iplAnalyzer.sortDataAccordingToTheColumn(SortField.BATTING_AVG);
         IplMostRunCsv[] iplMostRunCsv = new Gson().fromJson(sortedData, IplMostRunCsv[].class);
         Assert.assertEquals("MS Dhoni", iplMostRunCsv[0].playerName);
+    }
+
+    @Test
+    public void givenCSVFilePath_ShouldReturnBestStrikeRate() {
+        iplAnalyzer.loadIplData(IPL_MOST_RUN_CSV_FILE_PATH);
+        String sortedData = iplAnalyzer.sortDataAccordingToTheColumn(SortField.STRIKE_RATE);
+        IplMostRunCsv[] iplMostRunCsv = new Gson().fromJson(sortedData, IplMostRunCsv[].class);
+        Assert.assertEquals("Ishant Sharma", iplMostRunCsv[0].playerName);
     }
 
 

@@ -10,4 +10,7 @@ public class IplMostRunCsv {
     @CsvBindByName(column = "Avg", required = true)
     public double playerBattingAverage;
 
+    @CsvBindByName(column = "SR", required = true)
+    public double strikeRate;
+
 }

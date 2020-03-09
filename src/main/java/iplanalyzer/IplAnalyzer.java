@@ -12,9 +12,13 @@ import java.util.*;
 public class IplAnalyzer {
 
     List<IplMostRunCsv> list;
+    Map<SortField, Comparator<IplMostRunCsv>> sortMap;
 
     public IplAnalyzer(){
         list = new ArrayList<>();
+        sortMap = new HashMap<>();
+        this.sortMap.put(SortField.BATTING_AVG, Comparator.comparing(analyzer -> analyzer.playerBattingAverage));
+        this.sortMap.put(SortField.STRIKE_RATE, Comparator.comparing(analyzer -> analyzer.strikeRate));
     }
 
     public void loadIplData(String csvFilePath) {
@@ -33,17 +37,14 @@ public class IplAnalyzer {
         }
     }
 
-    public String sortDataAccordingToTheColumn() {
+    public String sortDataAccordingToTheColumn(SortField sortField) {
         if (list == null || list.size() == 0) {
             throw new IplAnalyzerException("No Data Found", IplAnalyzerException.ExceptionType.NO_DATA_FOUND);
         }
-        Comparator<IplMostRunCsv> csvComparator = Comparator.comparing(analyzer -> analyzer.playerBattingAverage);
-        this.sort(csvComparator.reversed());
+        this.sort(sortMap.get(sortField).reversed());
         String sortedStateCensus = new Gson().toJson(list);
         return sortedStateCensus;
     }
-    
-    
 
     private void sort(Comparator<IplMostRunCsv> censusCSVComparator) {
         for (int i = 0; i < list.size(); i++) {
