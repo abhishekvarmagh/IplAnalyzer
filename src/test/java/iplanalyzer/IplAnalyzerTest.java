@@ -39,5 +39,12 @@ public class IplAnalyzerTest {
         Assert.assertEquals("Andre Russell", iplMostRunCsv[0].playerName);
     }
 
+    @Test
+    public void givenBattingCSVFilePath_WhenSortedOnSixesAndFourWithAvg_ShouldReturnFoursAndSixesWithAvg() {
+        iplAnalyzer.loadIplData(IPL_MOST_RUN_CSV_FILE_PATH);
+        String sortedData = iplAnalyzer.sortDataAccordingToTheColumn(SortField.FOUR_AND_SIXES_WITH_AVG);
+        IplMostRunCsv[] iplMostRunCsv = new Gson().fromJson(sortedData, IplMostRunCsv[].class);
+        Assert.assertEquals("Andre Russell", iplMostRunCsv[0].playerName);
+    }
 
 }
