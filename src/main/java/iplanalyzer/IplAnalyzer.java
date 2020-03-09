@@ -3,6 +3,7 @@ package iplanalyzer;
 import com.google.gson.Gson;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
+
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
@@ -14,26 +15,27 @@ public class IplAnalyzer {
     List<IplMostRunCsv> list;
     Map<SortField, Comparator<IplMostRunCsv>> sortMap;
 
-    public IplAnalyzer(){
+    public IplAnalyzer() {
         list = new ArrayList<>();
         sortMap = new HashMap<>();
         this.sortMap.put(SortField.BATTING_AVG, Comparator.comparing(analyzer -> analyzer.playerBattingAverage));
         this.sortMap.put(SortField.STRIKE_RATE, Comparator.comparing(analyzer -> analyzer.strikeRate));
+        this.sortMap.put(SortField.MAXIMUM_FOUR_AND_SIXES, Comparator.comparing(analyzer -> analyzer.fours + analyzer.sixes));
     }
 
     public void loadIplData(String csvFilePath) {
-        try(Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
+        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
             CsvToBeanBuilder<IplMostRunCsv> csvToBeanBuilder = new CsvToBeanBuilder(reader);
             csvToBeanBuilder.withType(IplMostRunCsv.class);
             csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
             CsvToBean<IplMostRunCsv> csvToBean = csvToBeanBuilder.build();
             Iterator<IplMostRunCsv> iterator = csvToBean.iterator();
-            while(iterator.hasNext()){
+            while (iterator.hasNext()) {
                 IplMostRunCsv data = iterator.next();
                 list.add(data);
             }
         } catch (IOException e) {
-            throw new IplAnalyzerException(e.getMessage(),IplAnalyzerException.ExceptionType.NO_SUCH_FILE);
+            throw new IplAnalyzerException(e.getMessage(), IplAnalyzerException.ExceptionType.NO_SUCH_FILE);
         }
     }
 

@@ -16,7 +16,7 @@ public class IplAnalyzerTest {
     }
 
     @Test
-    public void givenCSVFilePath_ShouldReturnBestBattingAverage() {
+    public void givenBattingCSVFilePath_WhenSortedOnAverage_ShouldReturnBestBattingAverage() {
         iplAnalyzer.loadIplData(IPL_MOST_RUN_CSV_FILE_PATH);
         String sortedData = iplAnalyzer.sortDataAccordingToTheColumn(SortField.BATTING_AVG);
         IplMostRunCsv[] iplMostRunCsv = new Gson().fromJson(sortedData, IplMostRunCsv[].class);
@@ -24,11 +24,19 @@ public class IplAnalyzerTest {
     }
 
     @Test
-    public void givenCSVFilePath_ShouldReturnBestStrikeRate() {
+    public void givenBattingCSVFilePath_WhenSortedOnStrikeRate_ShouldReturnBestStrikeRate() {
         iplAnalyzer.loadIplData(IPL_MOST_RUN_CSV_FILE_PATH);
         String sortedData = iplAnalyzer.sortDataAccordingToTheColumn(SortField.STRIKE_RATE);
         IplMostRunCsv[] iplMostRunCsv = new Gson().fromJson(sortedData, IplMostRunCsv[].class);
         Assert.assertEquals("Ishant Sharma", iplMostRunCsv[0].playerName);
+    }
+
+    @Test
+    public void givenBattingCSVFilePath_WhenSortedOnMaximumNumberOfSixesAndFour_ShouldReturnMaximumFoursAndSixes() {
+        iplAnalyzer.loadIplData(IPL_MOST_RUN_CSV_FILE_PATH);
+        String sortedData = iplAnalyzer.sortDataAccordingToTheColumn(SortField.MAXIMUM_FOUR_AND_SIXES);
+        IplMostRunCsv[] iplMostRunCsv = new Gson().fromJson(sortedData, IplMostRunCsv[].class);
+        Assert.assertEquals("Andre Russell", iplMostRunCsv[0].playerName);
     }
 
 

@@ -13,4 +13,10 @@ public class IplMostRunCsv {
     @CsvBindByName(column = "SR", required = true)
     public double strikeRate;
 
+    @CsvBindByName(column = "6s", required = true)
+    public int sixes;
+
+    @CsvBindByName(column = "4s", required = true)
+    public int fours;
+
 }
