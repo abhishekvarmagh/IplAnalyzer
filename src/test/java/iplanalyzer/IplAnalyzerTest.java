@@ -54,4 +54,12 @@ public class IplAnalyzerTest {
         IplMostRunCsv[] iplMostRunCsv = new Gson().fromJson(sortedData,IplMostRunCsv[].class);
         Assert.assertEquals("MS Dhoni",iplMostRunCsv[0].playerName);
     }
+
+    @Test
+    public void givenBattingCSVFilePath_ShouldReturnMaximumRunsWithBestAverage() {
+        iplAnalyzer.loadIplData(IPL_MOST_RUN_CSV_FILE_PATH);
+        String sortedData = iplAnalyzer.sortDataAccordingToTheColumn(SortField.MAXIMUM_RUNS_WITH_BEST_AVERAGE);
+        IplMostRunCsv[] iplMostRunCsv = new Gson().fromJson(sortedData,IplMostRunCsv[].class);
+        Assert.assertEquals("David Warner ",iplMostRunCsv[0].playerName);
+    }
 }

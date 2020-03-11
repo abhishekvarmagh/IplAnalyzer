@@ -25,7 +25,8 @@ public class IplAnalyzer {
         this.sortMap.put(SortField.FOUR_AND_SIXES_WITH_AVG, fourSixAverage.thenComparing(analyzer -> analyzer.strikeRate));
         Comparator<IplMostRunCsv> bestAverageWithStrikeRate = Comparator.comparing(analyzer -> analyzer.playerBattingAverage);
         this.sortMap.put(SortField.AVERAGE_WITH_STRIKE_RATE, bestAverageWithStrikeRate.thenComparing(analyzer -> analyzer.strikeRate));
-
+        Comparator<IplMostRunCsv> maxRunsWithBestAverage = Comparator.comparing(analyzer -> analyzer.runs);
+        this.sortMap.put(SortField.MAXIMUM_RUNS_WITH_BEST_AVERAGE, maxRunsWithBestAverage.thenComparing(analyzer -> analyzer.playerBattingAverage));
     }
 
     public void loadIplData(String csvFilePath) {

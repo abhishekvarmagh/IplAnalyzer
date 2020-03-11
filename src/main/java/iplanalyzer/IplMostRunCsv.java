@@ -7,6 +7,9 @@ public class IplMostRunCsv {
     @CsvBindByName(column = "PLAYER", required = true)
     public String playerName;
 
+    @CsvBindByName(column = "Runs", required = true)
+    public int runs;
+
     @CsvBindByName(column = "Avg", required = true)
     public double playerBattingAverage;
 
