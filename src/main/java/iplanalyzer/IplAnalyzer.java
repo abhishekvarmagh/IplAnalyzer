@@ -1,14 +1,14 @@
 package iplanalyzer;
 
+import analyzer.CSVBuilderFactory;
+import analyzer.ICSVBuilder;
 import com.google.gson.Gson;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
-
 import java.io.IOException;
 import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.StreamSupport;
 
 public class IplAnalyzer {
 
@@ -34,10 +34,8 @@ public class IplAnalyzer {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createBuilder();
             Iterator<IplMostRunCsv> iterator = icsvBuilder.getCSVFileIterator(reader, IplMostRunCsv.class);
-            while (iterator.hasNext()) {
-                IplMostRunCsv data = iterator.next();
-                list.add(new IplDTO(data));
-            }
+            Iterable<IplMostRunCsv> iterable = () -> iterator;
+            StreamSupport.stream(iterable.spliterator(),false).forEach(analyzer -> list.add(new IplDTO(analyzer)));
         } catch (IOException e) {
             throw new IplAnalyzerException(e.getMessage(), IplAnalyzerException.ExceptionType.NO_SUCH_FILE);
         }
@@ -69,13 +67,12 @@ public class IplAnalyzer {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
             ICSVBuilder icsvBuilder = CSVBuilderFactory.createBuilder();
             Iterator<IplMostWicketsCsv> iterator = icsvBuilder.getCSVFileIterator(reader, IplMostWicketsCsv.class);
-            while (iterator.hasNext()) {
-                IplMostWicketsCsv data = iterator.next();
-                list.add(new IplDTO(data));
-            }
+            Iterable<IplMostWicketsCsv> iterable = () -> iterator;
+            StreamSupport.stream(iterable.spliterator(),false).forEach(analyzer -> list.add(new IplDTO(analyzer)));
         } catch (IOException e) {
             throw new IplAnalyzerException(e.getMessage(), IplAnalyzerException.ExceptionType.NO_SUCH_FILE);
         }
     }
+
 }
 
