@@ -32,7 +32,8 @@ public class IplAnalyzer {
 
     public void loadIplData(String csvFilePath) {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
-            Iterator<IplMostRunCsv> iterator = new OpenCSVBuilder().getCSVFileIterator(reader, IplMostRunCsv.class);
+            ICSVBuilder icsvBuilder = CSVBuilderFactory.createBuilder();
+            Iterator<IplMostRunCsv> iterator = icsvBuilder.getCSVFileIterator(reader, IplMostRunCsv.class);
             while (iterator.hasNext()) {
                 IplMostRunCsv data = iterator.next();
                 list.add(new IplDTO(data));
@@ -66,7 +67,8 @@ public class IplAnalyzer {
 
     public void loadIplBowlingData(String csvFilePath) {
         try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
-            Iterator<IplMostWicketsCsv> iterator = new OpenCSVBuilder().getCSVFileIterator(reader, IplMostWicketsCsv.class);
+            ICSVBuilder icsvBuilder = CSVBuilderFactory.createBuilder();
+            Iterator<IplMostWicketsCsv> iterator = icsvBuilder.getCSVFileIterator(reader, IplMostWicketsCsv.class);
             while (iterator.hasNext()) {
                 IplMostWicketsCsv data = iterator.next();
                 list.add(new IplDTO(data));
