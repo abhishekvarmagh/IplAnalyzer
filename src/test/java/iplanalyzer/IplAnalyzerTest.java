@@ -57,7 +57,7 @@ public class IplAnalyzerTest {
     }
 
     @Test
-    public void givenBattingCSVFilePath_ShouldReturnMaximumRunsWithBestAverage() {
+    public void givenBattingCSVFilePath_ShouldReturnMaximumRunWithBestAverage() {
         iplAnalyzer.loadIplData(IPL_MOST_RUN_CSV_FILE_PATH);
         String sortedData = iplAnalyzer.sortDataAccordingToTheColumn(SortField.MAXIMUM_RUNS_WITH_BEST_AVERAGE);
         IplMostRunCsv[] iplMostRunCsv = new Gson().fromJson(sortedData,IplMostRunCsv[].class);
@@ -65,10 +65,11 @@ public class IplAnalyzerTest {
     }
 
     @Test
-    public void givenWicketsCSVFilePath_WhenSortedOnAverage_ShouldReturnBestBowlingAverage() {
+    public void givenWicketCSVFilePath_WhenSortedOnAverage_ShouldReturnBestBowlingAverage() {
         iplAnalyzer.loadIplBowlingData(IPL_MOST_WICKETS_CSV_FILE_PATH);
         String sortedData = iplAnalyzer.sortDataAccordingToTheColumn(SortField.BOWLING_AVG);
-        IplMostWicketsCsv[] iplMostWicketsCsvs = new Gson().fromJson(sortedData, IplMostWicketsCsv[].class);
-        Assert.assertEquals("Krishnappa Gowtham", iplMostWicketsCsvs[0].playerName);
+        IplMostWicketsCsv[] iplMostWicketsCsv = new Gson().fromJson(sortedData, IplMostWicketsCsv[].class);
+        Assert.assertEquals("Krishnappa Gowtham", iplMostWicketsCsv[0].playerName);
     }
+
 }

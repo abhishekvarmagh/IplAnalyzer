@@ -3,7 +3,7 @@ package iplanalyzer;
 public class IplAnalyzerException extends RuntimeException {
 
     public enum ExceptionType {
-        NO_SUCH_FILE, NO_DATA_FOUND;
+        NO_SUCH_FILE, NO_DATA_FOUND, UNABLE_TO_PARSE;
     }
 
     ExceptionType type;
