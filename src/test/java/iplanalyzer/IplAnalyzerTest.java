@@ -80,4 +80,14 @@ public class IplAnalyzerTest {
         Assert.assertEquals("Krishnappa Gowtham", iplMostWicketsCsv[0].playerName);
     }
 
+    @Test
+    public void givenBowlingCSVFilePath_WhenSortedOnEconomyRate_ShouldReturnBestEconomyRate() {
+        iplAnalyzer.loadData(IplAnalyzer.Ipl.BOWLING, IPL_MOST_WICKETS_CSV_FILE_PATH);
+        String sortedData = iplAnalyzer.sortDataAccordingToTheColumn(SortField.ECONOMY_RATE);
+        IplMostWicketsCsv[] iplMostWicketsCsv = new Gson().fromJson(sortedData, IplMostWicketsCsv[].class);
+        Assert.assertEquals("Ben Cutting", iplMostWicketsCsv[0].playerName);
+    }
+
+
+
 }
