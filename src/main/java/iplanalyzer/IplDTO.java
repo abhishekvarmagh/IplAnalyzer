@@ -9,6 +9,8 @@ public class IplDTO {
     public int sixes;
     public int fours;
     public double economyRate;
+    public int fiveWicket;
+    public int fourWicket;
 
     public IplDTO(IplMostRunCsv data) {
         playerName = data.playerName;
@@ -24,5 +26,7 @@ public class IplDTO {
         average = data.average;
         strikeRate = data.strikeRate;
         economyRate = data.economyRate;
+        fiveWicket = data.fiveWicket;
+        fourWicket = data.fourWicket;
     }
 }

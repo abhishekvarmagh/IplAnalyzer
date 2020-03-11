@@ -15,4 +15,10 @@ public class IplMostWicketsCsv {
 
     @CsvBindByName(column = "Econ", required = true)
     public double economyRate;
+
+    @CsvBindByName(column = "5w", required = true)
+    public int fiveWicket;
+
+    @CsvBindByName(column = "4w", required = true)
+    public int fourWicket;
 }
