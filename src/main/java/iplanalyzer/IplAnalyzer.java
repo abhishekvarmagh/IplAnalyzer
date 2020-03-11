@@ -23,6 +23,8 @@ public class IplAnalyzer {
         this.sortMap.put(SortField.MAXIMUM_FOUR_AND_SIXES, Comparator.comparing(analyzer -> analyzer.fours + analyzer.sixes));
         Comparator<IplMostRunCsv> fourSixAverage = Comparator.comparing(analyzer -> analyzer.fours + analyzer.sixes);
         this.sortMap.put(SortField.FOUR_AND_SIXES_WITH_AVG, fourSixAverage.thenComparing(analyzer -> analyzer.strikeRate));
+        Comparator<IplMostRunCsv> bestAverageWithStrikeRate = Comparator.comparing(analyzer -> analyzer.playerBattingAverage);
+        this.sortMap.put(SortField.AVERAGE_WITH_STRIKE_RATE, bestAverageWithStrikeRate.thenComparing(analyzer -> analyzer.strikeRate));
 
     }
 
