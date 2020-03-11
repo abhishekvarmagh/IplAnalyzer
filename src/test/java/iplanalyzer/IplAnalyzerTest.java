@@ -8,6 +8,7 @@ import org.junit.Test;
 public class IplAnalyzerTest {
 
     private static String IPL_MOST_RUN_CSV_FILE_PATH = "./src/test/resources/IPL2019FactsheetMostRuns.csv";
+    private static String IPL_MOST_WICKETS_CSV_FILE_PATH = "./src/test/resources/IPL2019FactsheetMostWkts.csv";
     private IplAnalyzer iplAnalyzer;
 
     @Before
@@ -61,5 +62,13 @@ public class IplAnalyzerTest {
         String sortedData = iplAnalyzer.sortDataAccordingToTheColumn(SortField.MAXIMUM_RUNS_WITH_BEST_AVERAGE);
         IplMostRunCsv[] iplMostRunCsv = new Gson().fromJson(sortedData,IplMostRunCsv[].class);
         Assert.assertEquals("David Warner ",iplMostRunCsv[0].playerName);
+    }
+
+    @Test
+    public void givenWicketsCSVFilePath_WhenSortedOnAverage_ShouldReturnBestBowlingAverage() {
+        iplAnalyzer.loadIplBowlingData(IPL_MOST_WICKETS_CSV_FILE_PATH);
+        String sortedData = iplAnalyzer.sortDataAccordingToTheColumn(SortField.BOWLING_AVG);
+        IplMostWicketsCsv[] iplMostWicketsCsvs = new Gson().fromJson(sortedData, IplMostWicketsCsv[].class);
+        Assert.assertEquals("Krishnappa Gowtham", iplMostWicketsCsvs[0].playerName);
     }
 }

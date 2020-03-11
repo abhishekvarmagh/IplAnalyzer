@@ -12,21 +12,22 @@ import java.util.*;
 
 public class IplAnalyzer {
 
-    List<IplMostRunCsv> list;
-    Map<SortField, Comparator<IplMostRunCsv>> sortMap;
+    List<IplDTO> list;
+    Map<SortField, Comparator<IplDTO>> sortMap;
 
     public IplAnalyzer() {
         list = new ArrayList<>();
         sortMap = new HashMap<>();
-        this.sortMap.put(SortField.BATTING_AVG, Comparator.comparing(analyzer -> analyzer.playerBattingAverage));
+        this.sortMap.put(SortField.BATTING_AVG, Comparator.comparing(analyzer -> analyzer.average));
         this.sortMap.put(SortField.STRIKE_RATE, Comparator.comparing(analyzer -> analyzer.strikeRate));
         this.sortMap.put(SortField.MAXIMUM_FOUR_AND_SIXES, Comparator.comparing(analyzer -> analyzer.fours + analyzer.sixes));
-        Comparator<IplMostRunCsv> fourSixAverage = Comparator.comparing(analyzer -> analyzer.fours + analyzer.sixes);
+        Comparator<IplDTO> fourSixAverage = Comparator.comparing(analyzer -> analyzer.fours + analyzer.sixes);
         this.sortMap.put(SortField.FOUR_AND_SIXES_WITH_AVG, fourSixAverage.thenComparing(analyzer -> analyzer.strikeRate));
-        Comparator<IplMostRunCsv> bestAverageWithStrikeRate = Comparator.comparing(analyzer -> analyzer.playerBattingAverage);
+        Comparator<IplDTO> bestAverageWithStrikeRate = Comparator.comparing(analyzer -> analyzer.average);
         this.sortMap.put(SortField.AVERAGE_WITH_STRIKE_RATE, bestAverageWithStrikeRate.thenComparing(analyzer -> analyzer.strikeRate));
-        Comparator<IplMostRunCsv> maxRunsWithBestAverage = Comparator.comparing(analyzer -> analyzer.runs);
-        this.sortMap.put(SortField.MAXIMUM_RUNS_WITH_BEST_AVERAGE, maxRunsWithBestAverage.thenComparing(analyzer -> analyzer.playerBattingAverage));
+        Comparator<IplDTO> maxRunsWithBestAverage = Comparator.comparing(analyzer -> analyzer.runs);
+        this.sortMap.put(SortField.MAXIMUM_RUNS_WITH_BEST_AVERAGE, maxRunsWithBestAverage.thenComparing(analyzer -> analyzer.average));
+        this.sortMap.put(SortField.BOWLING_AVG, Comparator.comparing(analyzer -> analyzer.average));
     }
 
     public void loadIplData(String csvFilePath) {
@@ -38,7 +39,7 @@ public class IplAnalyzer {
             Iterator<IplMostRunCsv> iterator = csvToBean.iterator();
             while (iterator.hasNext()) {
                 IplMostRunCsv data = iterator.next();
-                list.add(data);
+                list.add(new IplDTO(data));
             }
         } catch (IOException e) {
             throw new IplAnalyzerException(e.getMessage(), IplAnalyzerException.ExceptionType.NO_SUCH_FILE);
@@ -54,18 +55,33 @@ public class IplAnalyzer {
         return sortedStateCensus;
     }
 
-    private void sort(Comparator<IplMostRunCsv> censusCSVComparator) {
+    private void sort(Comparator<IplDTO> censusCSVComparator) {
         for (int i = 0; i < list.size(); i++) {
             for (int j = 0; j < list.size() - 1 - i; j++) {
-                IplMostRunCsv mostRunCsv = list.get(j);
-                IplMostRunCsv mostRunCsv1 = list.get(j + 1);
-                if (censusCSVComparator.compare(mostRunCsv, mostRunCsv1) > 0) {
-                    list.set(j, mostRunCsv1);
-                    list.set(j + 1, mostRunCsv);
+                IplDTO iplDTO = list.get(j);
+                IplDTO iplDTO1 = list.get(j + 1);
+                if (censusCSVComparator.compare(iplDTO, iplDTO1) > 0) {
+                    list.set(j, iplDTO1);
+                    list.set(j + 1, iplDTO);
                 }
             }
         }
     }
 
+    public void loadIplBowlingData(String csvFilePath) {
+        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
+            CsvToBeanBuilder<IplMostWicketsCsv> csvToBeanBuilder = new CsvToBeanBuilder(reader);
+            csvToBeanBuilder.withType(IplMostWicketsCsv.class);
+            csvToBeanBuilder.withIgnoreLeadingWhiteSpace(true);
+            CsvToBean<IplMostWicketsCsv> csvToBean = csvToBeanBuilder.build();
+            Iterator<IplMostWicketsCsv> iterator = csvToBean.iterator();
+            while (iterator.hasNext()) {
+                IplMostWicketsCsv data = iterator.next();
+                list.add(new IplDTO(data));
+            }
+        } catch (IOException e) {
+            throw new IplAnalyzerException(e.getMessage(), IplAnalyzerException.ExceptionType.NO_SUCH_FILE);
+        }
+    }
 }
 
