@@ -32,6 +32,7 @@ public class IplAnalyzer {
         Comparator<IplDTO> maxRunsWithBestAverage = Comparator.comparing(analyzer -> analyzer.runs);
         this.sortMap.put(SortField.MAXIMUM_RUNS_WITH_BEST_AVERAGE, maxRunsWithBestAverage.thenComparing(analyzer -> analyzer.average));
         this.sortMap.put(SortField.BOWLING_AVG, Comparator.comparing(analyzer -> analyzer.average));
+        this.sortMap.put(SortField.BOWLING_STRIKE_RATE, Comparator.comparing(analyzer -> analyzer.strikeRate));
     }
 
     public void loadData(Ipl ipl, String csvFilePath) {
