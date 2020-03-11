@@ -12,6 +12,10 @@ import java.util.stream.StreamSupport;
 
 public class IplAnalyzer {
 
+    public enum Ipl {
+        BATTING, BOWLING;
+    }
+
     List<IplDTO> list;
     Map<SortField, Comparator<IplDTO>> sortMap;
 
@@ -30,16 +34,11 @@ public class IplAnalyzer {
         this.sortMap.put(SortField.BOWLING_AVG, Comparator.comparing(analyzer -> analyzer.average));
     }
 
-    public void loadIplData(String csvFilePath) {
-        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
-            ICSVBuilder icsvBuilder = CSVBuilderFactory.createBuilder();
-            Iterator<IplMostRunCsv> iterator = icsvBuilder.getCSVFileIterator(reader, IplMostRunCsv.class);
-            Iterable<IplMostRunCsv> iterable = () -> iterator;
-            StreamSupport.stream(iterable.spliterator(),false).forEach(analyzer -> list.add(new IplDTO(analyzer)));
-        } catch (IOException e) {
-            throw new IplAnalyzerException(e.getMessage(), IplAnalyzerException.ExceptionType.NO_SUCH_FILE);
-        }
+    public void loadData(Ipl ipl, String csvFilePath) {
+        list = IplAdapterFactory.getIplAdapter(ipl, csvFilePath);
     }
+
+
 
     public String sortDataAccordingToTheColumn(SortField sortField) {
         if (list == null || list.size() == 0) {
@@ -60,17 +59,6 @@ public class IplAnalyzer {
                     list.set(j + 1, iplDTO);
                 }
             }
-        }
-    }
-
-    public void loadIplBowlingData(String csvFilePath) {
-        try (Reader reader = Files.newBufferedReader(Paths.get(csvFilePath))) {
-            ICSVBuilder icsvBuilder = CSVBuilderFactory.createBuilder();
-            Iterator<IplMostWicketsCsv> iterator = icsvBuilder.getCSVFileIterator(reader, IplMostWicketsCsv.class);
-            Iterable<IplMostWicketsCsv> iterable = () -> iterator;
-            StreamSupport.stream(iterable.spliterator(),false).forEach(analyzer -> list.add(new IplDTO(analyzer)));
-        } catch (IOException e) {
-            throw new IplAnalyzerException(e.getMessage(), IplAnalyzerException.ExceptionType.NO_SUCH_FILE);
         }
     }
 
